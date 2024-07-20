@@ -13,14 +13,15 @@ export async function usersRoutes(app:FastifyInstance){
 
     let sessionId = request.cookies.sessionId
 
-    if(!sessionId){
-      sessionId = crypto.randomUUID()
+    reply.clearCookie('sessionId')
 
-      reply.setCookie('sessionId', sessionId, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7, // 7 days
-      })
-    }
+    
+    sessionId = crypto.randomUUID()
+
+    reply.setCookie('sessionId', sessionId, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    })
 
     await knex('users').insert({
       id: crypto.randomUUID(),
@@ -47,14 +48,18 @@ export async function usersRoutes(app:FastifyInstance){
 
     let sessionId = request.cookies.sessionId
 
-    if(!sessionId){
-      sessionId = crypto.randomUUID()
+    reply.clearCookie('sessionId')
 
-      reply.setCookie('sessionId', sessionId, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7, // 7 days
-      })
-    }
+    
+    sessionId = crypto.randomUUID()
+
+    reply.setCookie('sessionId', sessionId, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    })
+
+    await knex('users').update({session_id: sessionId}).where({id: user.id})
+    
 
     return reply.status(200).send()
   })
