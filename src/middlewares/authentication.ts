@@ -10,6 +10,7 @@ export async function authentication(request:FastifyRequest, reply:FastifyReply)
 
   const user = await knex('users').where({session_id: sessionId}).first()
 
+
   if(!user){
     return reply.status(401).send({error: "Cookie is invalid"})
   }
