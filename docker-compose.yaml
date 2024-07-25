@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  postgresql:
+    container_name: postgresql
+    image: postgres:12
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_USER=dailydiet
+      - POSTGRES_DB=database
+    networks:
+      - dailydiet-network
+    volumes:
+      - db:/var/lib/postgresql
+
+  dailydiet-api:
+    container_name: dailydiet-api
+    image: dailydiet-api:v6
+    build: 
+      context: .
+    ports:
+      - 3001:3001
+    environment:
+      - DATABASE_CLIENT=pg
+      - DATABASE_URL=postgresql://dailydiet:123@localhost:5432/database
+    depends_on:
+      - postgresql
+    networks:
+      - dailydiet-network
+    
+
+networks:
+  dailydiet-network:
+    driver: bridge
+    
+volumes:
+  db:

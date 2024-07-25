@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "knex": "node --import tsx node_modules/.bin/knex",
+    "migrate": "npx knex migrate:latest",
     "test": "vitest",
     "build": "tsup src --out-dir build"
   },
